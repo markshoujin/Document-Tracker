@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const server = http.createServer(app);
+
 app.use(session({
   secret: '100100',
   resave: false,
@@ -28,10 +28,6 @@ app.use(session({
     sameSite: 'lax',
   }
 }));
-const options = {
-  key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('cert.pem'),
-};
 app.use(cors({
   origin: '*',  // your React app origin
   credentials: true,                 // allow cookies to be sent
@@ -49,8 +45,8 @@ app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 // Start server
-https.createServer(options, app).listen(4400, () => {
-  console.log(`✅ HTTPS server running at https://<your-ip>:4400`);
+app.listen(4400, () => {
+  console.log("Server running at http://localhost:4400");
 });
 
 
