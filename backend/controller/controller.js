@@ -1,6 +1,4 @@
 // controller.js
-import { db } from '../db.js';
-import { database } from '../db.js';
 import dayjs from 'dayjs';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
