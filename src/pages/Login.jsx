@@ -18,7 +18,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
-
+  const [loading,setLoading] = useState(false)
   const handleChange = (e) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
     setError('');
@@ -26,6 +26,7 @@ const LoginPage = () => {
 
  const handleSubmit = async (e) => {
   e.preventDefault();
+  setLoading(true)
   try {
     const res = await axios.post('/auth/login', form, { withCredentials: true });
     const data = res.data;
@@ -41,17 +42,18 @@ const LoginPage = () => {
 
       // Navigate after successful login
       navigate('/');
+      setLoading(false)
     } else {
       console.error('Login failed:', data.message);
       setError(data.message);
+      setLoading(false)
     }
   } catch (err) {
     setError(err.response?.data?.message || 'Login failed');
+    setLoading(false)
   }
 };
-const token = localStorage.getItem('token');
 
-console.log("Token",token)
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: '#1F2937', display: 'flex', alignItems: 'center' }}>
@@ -133,6 +135,8 @@ console.log("Token",token)
             <Button
               type="submit"
               variant="contained"
+              loading={loading}
+              
               fullWidth
               sx={{
                 mt: 2,
