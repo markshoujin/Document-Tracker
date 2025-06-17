@@ -46,6 +46,7 @@ const Sidebar = ({ children }) => {
 const handleLogout = async () => {
   try {
     await axios.post('/auth/logout', {}, { withCredentials: true });
+    localStorage.removeItem('token'); // if you stored anything
     navigate('/login');
   } catch (err) {
     console.error('Logout failed:', err);

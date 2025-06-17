@@ -7,12 +7,15 @@ const ProtectedRoute = ({ children }) => {
   const [auth, setAuth] = useState(null);
 
   useEffect(() => {
-    axios.get('/auth/profile', { withCredentials: true })
-      .then(() => setAuth(true))
-      .catch(() => setAuth(false));
+    const token = localStorage.getItem('token'); // or any key you stored
+    if (token) {
+      setAuth(true);
+    } else {
+      setAuth(false);
+    }
   }, []);
 
-  if (auth === null) return null; // or loading spinner
+  if (auth === null) return null; // Optional: return a loading spinner
   return auth ? children : <Navigate to="/login" />;
 };
 
